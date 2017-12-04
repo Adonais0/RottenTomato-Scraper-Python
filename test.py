@@ -1,3 +1,4 @@
+#_*_ coding: utf-8 _*_
 import requests
 import json
 from bs4 import BeautifulSoup
@@ -50,15 +51,25 @@ class Movie:
         else:
             self.audience_score = None
         self.audence_num = soup.find("div",{"class":"audience-info hidden-xs superPageFontColor"}).find_all("div")[1].text[-9:]
-        self.boxoffice = soup.find("ul",{"class":"content-meta info"}).find_all("li")[6].find_all("div")[1].text.strip()
+        try:
+            self.boxoffice = soup.find("ul",{"class":"content-meta info"}).find_all("li")[6].find_all("div")[1].text.strip()
+        except:
+            self.boxoffice = "None"
     def __str__(self):
         return str(self.name+self.tomato_meter)
     def __repr__(self):
-        r = ('Name of Movie: {}\nTomato meter: {}\n'.format(self.name,self.tomato_meter)).encode('utf8', 'replace')
+        try:
+            r = "Name of Movie: {}\nTomato meter: {}\n".format(self.name,self.tomato_meter)
+        except UnicodeEncodeError:#fix later
+            r = "Unicode error here "
+            # if sys.version_info>=(3,):
+            #     r = ("Name of Movie: {}\nTomato meter: {}\n".format(self.name,self.tomato_meter)).decode('utf-8').decode(sys.stout.encoding)
+            # else:
+            #     r = ("Name of Movie: {}\nTomato meter: {}\n".format(self.name,self.tomato_meter)).decode('utf-16')
         return r
     def __contains__(self, item):
         return self.name.find(item)
-def Cache(url,filename):
+def Cache(url,filename):#(L'ÉCONOMIE DU COUPLE)
     try:
         data = open(filename,'r').read()
     except:
@@ -88,7 +99,7 @@ url1 = m_soup.find("div",{"class":"mb-movies"}).find_all("div",{"class":"mb-movi
 print(url1)
 baseurl = "https://www.rottentomatoes.com"
 url_list = []
-for i in range(10):
+for i in range(20):
     a = m_soup.find("div",{"class":"mb-movies"}).find_all("div",{"class":"mb-movie"})[i].find("a").get("href")
     url = baseurl+a
     url_list.append(url)
