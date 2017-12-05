@@ -14,30 +14,6 @@ URL = "https://www.rottentomatoes.com/m/all_saints"
 big_url = "https://www.rottentomatoes.com/browse/dvd-streaming-all"
 baseurl = "https://www.rottentomatoes.com"
 
-def search_artist(search_term, media_term = "all"):
-    baseurl = "https://itunes.apple.com/search"
-    params = {}
-    params["media"] = media_term
-    params["term"] = search_term
-
-    # params["entity"] = entity
-    result_dict = json.loads(requests.get(baseurl,params = params).text)
-    return result_dict
-
-class Media():
-    def __init__(self,itunes_dict):
-        self.title = itunes_dict['trackName']
-        self.author = itunes_dict['artistName']
-        self.itunes_URL = itunes_dict['trackViewUrl']
-        self.itunes_id = itunes_dict['trackId']
-    def __str__(self):
-        return "{} by {}".format(self.title,self.author)
-    def __repr__(self):
-        return "ITUNES MEDIA: {}".format(self.itunes_id)
-    def __len__(self):
-        return 0
-    def __contains__(self, item):
-        return item in self.title
 class Movie:
     def __init__(self,soup):
         self.name = soup.find("h1").text.strip()
@@ -61,7 +37,7 @@ class Movie:
         try:
             r = "Name of Movie: {}\nTomato meter: {}\n".format(self.name,self.tomato_meter)
         except UnicodeEncodeError:#fix later
-            r = "Unicode error here "
+            r = "Unicode error here \n"
             # if sys.version_info>=(3,):
             #     r = ("Name of Movie: {}\nTomato meter: {}\n".format(self.name,self.tomato_meter)).decode('utf-8').decode(sys.stout.encoding)
             # else:
@@ -100,13 +76,14 @@ def Cache_url_list(num):
         #selenium show more
         #use j define how many times you want to click show more button
         j = 0
-        while j < 2:
+        while j < 100:
             try:
                 loadMoreButton = browser.find_element_by_xpath('//*[@id="show-more-btn"]/button')
                 time.sleep(2)
                 loadMoreButton.click()
                 time.sleep(5)
                 j = j+1
+                print(j)
             except Exception as e:
                 print (e)
                 break
@@ -126,7 +103,7 @@ def Cache_url_list(num):
             wr.writerow([url])
     return url_list
 
-url_list = Cache_url_list(64)
+url_list = Cache_url_list(2000)
 movie_list = []
 
 # scrape single movie content
