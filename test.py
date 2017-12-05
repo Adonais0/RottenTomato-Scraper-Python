@@ -6,13 +6,13 @@ import io
 import sys
 from selenium import webdriver
 from urllib2 import quote
+import csv
+import time
 # URL = "https://www.rottentomatoes.com/m/birth_of_the_dragon"
 
 URL = "https://www.rottentomatoes.com/m/all_saints"
 big_url = "https://www.rottentomatoes.com/browse/dvd-streaming-all"
-browser = webdriver.PhantomJS()
-browser.set_window_size(1120,550)
-browser.get(big_url)
+baseurl = "https://www.rottentomatoes.com"
 
 def search_artist(search_term, media_term = "all"):
     baseurl = "https://itunes.apple.com/search"
@@ -78,38 +78,64 @@ def Cache(url,filename):#(L'ÉCONOMIE DU COUPLE)
         f.write(data)
         f.close()
     return data
-def Cache_dynamic(url,filename):
-    try:
-        data = open(filename,'r').read()
-    except:
-        browser = webdriver.PhantomJS()
-        browser.set_window_size(1120,550)
-        data = browser.get(url)
-        f = io.open(filename,'w',encoding='utf8')
-        f.write(data)
-        f.close()
-    return browser.page_source
+
 testdata = Cache(URL,"movie.html")
 # print(testdata)
 #div class = critic-score meter, audience-score meter
 soup = BeautifulSoup(testdata,'html.parser')
 # dyna = Cache_dynamic(big_url,"movies.html")
-m_soup = BeautifulSoup(browser.page_source,'html.parser')
-url1 = m_soup.find("div",{"class":"mb-movies"}).find_all("div",{"class":"mb-movie"})[0].find("a").get("href")
-print(url1)
-baseurl = "https://www.rottentomatoes.com"
-url_list = []
-for i in range(20):
-    a = m_soup.find("div",{"class":"mb-movies"}).find_all("div",{"class":"mb-movie"})[i].find("a").get("href")
-    url = baseurl+a
-    url_list.append(url)
-print url_list
+
+#build cache of the url
+def Cache_url_list(num):
+    try:
+        f = open('url.csv','r')
+        cs = csv.reader(f)
+        url_list = []
+        for row in cs:
+            url_list.append(row)
+    except:
+        browser = webdriver.PhantomJS()
+        browser.set_window_size(1120,550)
+        browser.get(big_url)
+        #selenium show more
+        #use j define how many times you want to click show more button
+        j = 0
+        while j < 2:
+            try:
+                loadMoreButton = browser.find_element_by_xpath('//*[@id="show-more-btn"]/button')
+                time.sleep(2)
+                loadMoreButton.click()
+                time.sleep(5)
+                j = j+1
+            except Exception as e:
+                print (e)
+                break
+
+        m_soup = BeautifulSoup(browser.page_source,'html.parser')
+        url_list = []
+        for i in range(num):
+            try:
+                a = m_soup.find("div",{"class":"mb-movies"}).find_all("div",{"class":"mb-movie"})[i].find("a").get("href")
+                url = baseurl+a
+            except:
+                url = "None"
+            url_list.append(url)
+        myfile = open ('url.csv','wb')
+        wr = csv.writer(myfile, quoting = csv.QUOTE_ALL)
+        for url in url_list:
+            wr.writerow([url])
+    return url_list
+
+url_list = Cache_url_list(64)
 movie_list = []
+
+# scrape single movie content
 for url in url_list:
-    data = Cache(url,url[33:]+".html")
-    soup = BeautifulSoup(data,'html.parser')
-    movie_list.append(Movie(soup))
-print(movie_list)
+    print(url)
+#     data = Cache(url,url[33:]+".html")
+#     soup = BeautifulSoup(data,'html.parser')
+#     movie_list.append(Movie(soup))
+# print(movie_list)
 
 
 # all_saints = Movie(soup)
