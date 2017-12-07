@@ -14,9 +14,16 @@ import psycopg2.extras
 from psycopg2 import sql
 
 #havs two csv file: urls, and data
+<<<<<<< HEAD
 #create 2 tables:
 #basic_info_of_movie(name, genre, director, time, boxoffice)
 #tomato_meter(name, tomato_meter,tomato_num,audience_score,audience_num)
+=======
+#create 3 tables: url_of_movie(name, url)
+#basic_info_of_movie(name, genre, director, time, boxoffice)
+#tomato_meter(name, tomato_meter,tomato_num,audience_score,audience_num)
+# Write code / functions to set up database connection and cursor here.
+>>>>>>> 370a3f25aeb34ba7953687079c8f525584a7d4de
 
 def get_connection_and_cursor():
     try:
