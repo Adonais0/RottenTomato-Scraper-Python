@@ -68,7 +68,7 @@ class Movie:
         try:
             self.date = soup.find("ul",{"class":"content-meta info"}).find_all("li")[4].find_all("div")[1].text.strip()
         except:
-            self.data = None
+            self.date = None
         try:
             self.tomato_meter = int(soup.find("div",{"class":"critic-score meter"}).find("span", {"class": "superPageFontColor"}).find("span").text)
         except:
@@ -178,5 +178,3 @@ movie_list = return_movie_list(2000)
 get_data_from_csv('data.csv',movie_list)
 #------------------------------------------------
 #Connect with database--------------------------
-
-#------------------------------------------------
