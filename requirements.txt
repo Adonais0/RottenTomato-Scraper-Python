@@ -1,0 +1,14 @@
+beautifulsoup4==4.6.0
+bs4==0.0.1
+certifi==2017.7.27.1
+chardet==3.0.4
+fb==0.4.0
+idna==2.6
+oauthlib==2.0.6
+psycopg2==2.7.3.2
+requests==2.18.4
+requests-oauthlib==0.8.0
+selenium==3.8.0
+unicodecsv==0.14.1
+urllib3==1.22
+virtualenv==15.1.0

@@ -142,10 +142,14 @@ def Cache_url_list(num):
             except:
                 url = "None"
             url_list.append(url)
-        myfile = open ('url.csv','wb')
+        myfile = open ('url.csv','w')
         wr = csv.writer(myfile)
+        x = 0
         for url in url_list:
             wr.writerow([url])#changed from([url])
+            x = x+1
+            print('write {} urls'.format(x))
+
     return url_list
 
 # Create Movie list------------------
