@@ -49,13 +49,6 @@ def setup_database():
     db_connection.commit()
     print('Setup database complete')
 
-def execute_and_print(query, numer_of_results=1):
-    db_cursor.execute(query)
-    results = db_cursor.fetchall()
-    for r in results[:numer_of_results]:
-        print(r)
-    print('--> Result Rows:', len(results))
-    print()
-    return results
+
 #umcomment one by one
 setup_database()#setup once
