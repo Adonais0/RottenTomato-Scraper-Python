@@ -8,7 +8,8 @@
 3. Create a database named `chuyao_507finalproject`
 4. Create a `plotlyconfig.py` and fill in with your own Plotly config.(You can refer to `plotlyconfig_example.py`)
 5. Run `SI507F17_finalproject.py`
-6. Run `SI507F17_finalproject_test.py`
+6. I suggest you to change the `SI507F17_finalproject.py` line 184: `movie_list = return_movie_list(2000)` into `movie_list = return_movie_list(5)` before running test file. This would save you a lot of time.
+7. Run `SI507F17_finalproject_test.py`
 
 ## Project Description
 ### Run SI507F17_finalproject.py:

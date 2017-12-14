@@ -181,7 +181,7 @@ def get_data_from_csv(filename,list_movie):
     return outfile
 
 # movie_list = return_movie_list(2000)
-movie_list = return_movie_list(5)
+movie_list = return_movie_list(2000)
 csv_file = get_data_from_csv('data.csv',movie_list)
 #------------------------------------------------
 #Connect with database--------------------------
