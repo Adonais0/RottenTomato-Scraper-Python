@@ -5,13 +5,10 @@
 ##Please run files following this sequence:
 1. __Download the cache file__ (or you will have to wait for around 1 hour to get the data)
 2. `pip3 install -r requirements.txt`
-2. Run `SI507F17_finalproject.py`
 3. Create a database named `chuyao_507finalproject`
-3. Run `database_setup.py` to setup database
-4. Run `database_insert_and_query.py` to insert data and make queries
-5. Create a `plotlyconfig.py` and fill in with your own Plotly config.(You can refer to `plotlyconfig_example.py`)
-6. Run `draw.py`
-7. Run `SI507F17_finalproject_test.py`
+4. Create a `plotlyconfig.py` and fill in with your own Plotly config.(You can refer to `plotlyconfig_example.py`)
+5. Run `SI507F17_finalproject.py`
+6. Run `SI507F17_finalproject_test.py`
 
 ## Project Description
 ### Run SI507F17_finalproject.py:
@@ -21,19 +18,19 @@
 
 3. Create a class: `Movie()` , a Movie instance includes following attributes:
 
-  * Movie Name
-  * Genre
-  * Director
-  * Date in Theatre
-  * Box Office
-  * Tomato Meter
-  * Tomato Meter Number
-  * Audience Score
-  * Audience Number
+    * Movie Name
+    * Genre
+    * Director
+    * Date in Theatre
+    * Box Office
+    * Tomato Meter
+    * Tomato Meter Number
+    * Audience Score
+    * Audience Number
 
 4. Store the 2000 movie information into `data.csv`
 
-### Run database_setup.py:
+### Database:
  * Includes 2 tables
      * `basic_info_of_movie`
          * `name (PRIMARY KEY)`
@@ -47,13 +44,12 @@
          * `tomato_meter`
          * `tomato_num`
          * `audience_score`
-         * `audience_num`
- * `database_insert_and_query.py`   
-        *  insert 2000 data into two tables
+         * `audience_num`   
+ * insert 2000 data into two tables
 
-### Run draw.py:
+### Visualization:
 
-Use [Plotly](https://plot.ly/) to visualize the scatter relation between the tomato meter and audience score, and the relation between the tomato meter and genre.
+Use [Plotly](https://plot.ly/) to visualize the scatter relation between the tomato meter and audience score, and the relation between the tomato meter and genre. After running the program, you can get two html files showing following images
 
 ![Image of Scatter](https://github.com/Adonais0/SI507-F17-FinalProject/blob/master/images/new_scatter.png?raw=true)
 

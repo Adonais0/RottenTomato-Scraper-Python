@@ -1,7 +1,6 @@
 import unittest
 import csv
 from SI507F17_finalproject import *
-from draw import *
 import json
 import plotly
 from config import *

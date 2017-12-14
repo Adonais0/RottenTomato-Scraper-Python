@@ -12,6 +12,9 @@ from config import *
 import psycopg2
 import psycopg2.extras
 from psycopg2 import sql
+import plotly
+from plotly.graph_objs import Scatter,Box, Layout
+import plotlyconfig as config_pl
 
 CACHE_FNAME = "cache_contents.json"
 URL = "https://www.rottentomatoes.com/m/all_saints"
@@ -92,7 +95,7 @@ class Movie:
         except:
             self.boxoffice = None
     def __str__(self):
-        return "\nMovie Name: "+self.name+"\n Meter: "+self.tomato_meter
+        return "\nMovie Name: "+self.name+"\n Meter: "+str(self.tomato_meter)
     def __repr__(self):
         return "\nMovie Name: "+self.name
     def __contains__(self, item):
@@ -178,8 +181,107 @@ def get_data_from_csv(filename,list_movie):
     return outfile
 
 # movie_list = return_movie_list(2000)
-movie_list = return_movie_list(2000)
+movie_list = return_movie_list(5)
 csv_file = get_data_from_csv('data.csv',movie_list)
 #------------------------------------------------
 #Connect with database--------------------------
+
 #test would run 2000 data again using import
+def get_connection_and_cursor():
+    try:
+        if db_password != "": #database has password
+            db_connection = psycopg2.connect("dbname = '{0}' user='{1}' password='{2}'".format(db_name,db_user,db_password))
+            print("connect successfully to database")
+        else: #database doesn't have password
+            db_connection = psycopg2.connect("dbname = '{0}' user='{1}'".format(db_name,db_user))
+    except:
+        print("Fail to connect to server")
+        sys.exit(1)
+    db_cursor = db_connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    return db_connection, db_cursor
+db_connection,db_cursor = get_connection_and_cursor()#connect to the database
+def setup_database():
+    #Table basic_info_of_movie
+    try:
+        db_cursor.execute("CREATE TABLE basic_info_of_movie(name VARCHAR(128) PRIMARY KEY,genre VARCHAR(128), director VARCHAR(255), time_in_theatre VARCHAR(128), boxoffice VARCHAR(255))")
+    except:
+        print("table already exists")
+    #Table tomato_meter
+    try:
+        db_cursor.execute("CREATE TABLE tomato_meter(movie_id SERIAL PRIMARY KEY, name VARCHAR(128), tomato_meter INTEGER, tomato_num INTEGER, audience_score VARCHAR(255), audience_num VARCHAR(255), FOREIGN KEY (name) REFERENCES basic_info_of_movie(name))")
+    except:
+        print("table already exists")
+
+    db_connection.commit()
+    print('Setup database complete')
+
+setup_database()#setup once
+
+#------------INSERT INTO DATABASE------------------
+def insert_into_database():
+    with open ('data.csv', 'r') as f:
+        reader = csv.reader(f)
+        next(reader)
+        i = 0
+        for row in reader:
+            i = i+1
+            if "404" not in row[0]:
+                print("inputing into the database...")
+                db_cursor.execute(
+                    "INSERT INTO basic_info_of_movie VALUES(%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING", (row[0],row[1],row[2],row[3],row[4])
+                )
+                db_cursor.execute(
+                    "INSERT INTO tomato_meter VALUES(%s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING", (i,row[0],row[4],row[5],row[6],row[7])
+                    )
+    db_connection.commit()
+    print("successfully inserted")
+
+insert_into_database()#insert once
+
+def execute_and_print(query, numer_of_results=1):
+    db_cursor.execute(query)
+    results = db_cursor.fetchall()
+    for r in results[:numer_of_results]:
+        print(r)
+    print('--> Result Rows:', len(results))
+    print()
+    return results
+#--------make query tests---------------
+happy_movies = execute_and_print(""" SELECT "name" FROM "basic_info_of_movie" WHERE "genre" LIKE 'Comedy' """)
+print(happy_movies)
+a = execute_and_print(""" SELECT ("basic_info_of_movie"."director") FROM "basic_info_of_movie" INNER JOIN "tomato_meter" ON ("tomato_meter"."tomato_meter" = 100) """)
+print(a)
+meter = execute_and_print(' SELECT "name","tomato_meter","audience_score" FROM "tomato_meter"')
+print(meter)
+test = execute_and_print(""" SELECT * FROM "basic_info_of_movie" INNER JOIN "tomato_meter" ON "basic_info_of_movie"."name" = "tomato_meter"."name" """)
+print(test)
+
+#--------------VISUALIZATION---------------------
+plotly.tools.set_credentials_file(username=config_pl.username, api_key=config_pl.api_key)
+
+db_cursor.execute(""" SELECT * FROM "basic_info_of_movie" INNER JOIN "tomato_meter" ON "basic_info_of_movie"."name" = "tomato_meter"."name" """)
+list_of_dict = db_cursor.fetchall()
+list_of_genre = []
+list_of_tomato_meter = []
+list_of_audience_score = []
+for d in list_of_dict:
+    list_of_genre.append(d['genre'])
+    list_of_tomato_meter.append(d['tomato_meter'])
+    list_of_audience_score.append(d['audience_score'])
+#-----------------------------------------
+def show1():
+    div = plotly.offline.plot({
+        "data":[Scatter(x = list_of_tomato_meter, y = list_of_audience_score, mode = 'markers')],
+        "layout": Layout(title = "Relation Between Tomato Meter and Audience Score",xaxis = dict(title = 'Tomato Meter'),yaxis = dict(title = 'Audience Score')),
+    },
+        filename = 'scatter.html')
+    return div
+show1()
+def show2():
+    div = plotly.offline.plot({
+        "data":[Box(x = list_of_genre, y = list_of_tomato_meter, name = 'Tomato Meter'),Box(x = list_of_genre, y = list_of_audience_score, name = 'Audience Score')],
+        "layout":Layout(title = "Relation Between Genre and Tomato Meter",boxmode = 'group'),
+    },
+        filename = 'box.html')
+    return div
+show2()
