@@ -2,7 +2,8 @@
  * Target: Scrape 2000 movie information from [Rotten Tomato](https://www.rottentomatoes.com/browse/dvd-streaming-all/)
  * __Please download the [Cache File](https://drive.google.com/a/umich.edu/file/d/182RyW3mWL1yeghIf4r4tB3R5ZslDu_CT/view?usp=sharing) first!__
 
-##Please run files following this sequence:
+## Please run files following this sequence:
+
 1. __Download the cache file__ (or you will have to wait for around 1 hour to get the data)
 2. `pip3 install -r requirements.txt`
 3. Create a database named `chuyao_507finalproject`
