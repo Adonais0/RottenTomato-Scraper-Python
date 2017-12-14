@@ -51,7 +51,7 @@
  * `database_insert_and_query.py`   
         *  insert 2000 data into two tables
 
-###Run draw.py:
+### Run draw.py:
 
 Use [Plotly](https://plot.ly/) to visualize the scatter relation between the tomato meter and audience score, and the relation between the tomato meter and genre.
 
