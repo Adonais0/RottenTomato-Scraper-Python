@@ -17,7 +17,7 @@ class Cache(unittest.TestCase):
         self.data.close()
         self.js.close()
 
-class Movie(unittest.TestCase):
+class TestMovie(unittest.TestCase):
     def setUp(self):
         self.url = 'https://www.rottentomatoes.com/m/keplers_dream'
         self.data = CACHE_DICTION[self.url]#return html
@@ -25,10 +25,10 @@ class Movie(unittest.TestCase):
         self.sample_inst = Movie(self.soup_movie_inst)
 
     def test_movie_constructor(self):
-        self.assertIsInstance(self.sample_inst.name,"str")
-        self.assertIsInstance(self.sample_inst.genre, "str")
+        self.assertIsInstance(self.sample_inst.name,str)
+        self.assertIsInstance(self.sample_inst.genre, str)
         self.assertIsInstance(self.sample_inst.director, str)
-        self.assertIsInstance(self.sample_inst.data, str)
+        self.assertIsInstance(self.sample_inst.date, str)
         self.assertIsInstance(self.sample_inst.tomato_meter, int)
         self.assertIsInstance(self.sample_inst.tomato_num, int)
         self.assertIsInstance(self.sample_inst.audience_score, int or None)

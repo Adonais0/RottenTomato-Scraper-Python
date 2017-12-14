@@ -13,7 +13,6 @@ import psycopg2
 import psycopg2.extras
 from psycopg2 import sql
 
-# URL = "https://www.rottentomatoes.com/m/birth_of_the_dragon"
 CACHE_FNAME = "cache_contents.json"
 URL = "https://www.rottentomatoes.com/m/all_saints"
 big_url = "https://www.rottentomatoes.com/browse/dvd-streaming-all"
@@ -178,7 +177,9 @@ def get_data_from_csv(filename,list_movie):
             outfile.write('"{}","{}","{}","{}","{}","{}","{}","{}","{}"\n'.format(movie.name, movie.genre, movie.director,movie.date,movie.tomato_meter,movie.tomato_num,movie.audience_score,movie.audience_num,movie.boxoffice))#try python3
     return outfile
 
+# movie_list = return_movie_list(2000)
 movie_list = return_movie_list(2000)
-get_data_from_csv('data.csv',movie_list)
+csv_file = get_data_from_csv('data.csv',movie_list)
 #------------------------------------------------
 #Connect with database--------------------------
+#test would run 2000 data again using import
