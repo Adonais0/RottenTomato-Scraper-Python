@@ -55,6 +55,6 @@
 
 Use [Plotly](https://plot.ly/) to visualize the scatter relation between the tomato meter and audience score, and the relation between the tomato meter and genre.
 
-![Image of Scatter](https://github.com/Adonais0/SI507-F17-FinalProject/blob/master/images/scatter.png?raw=true)
+![Image of Scatter](https://github.com/Adonais0/SI507-F17-FinalProject/blob/master/images/new_scatter.png?raw=true)
 
-![Image of Box](https://github.com/Adonais0/SI507-F17-FinalProject/blob/master/images/newplot.png?raw=true) 
+![Image of Box](https://github.com/Adonais0/SI507-F17-FinalProject/blob/master/images/newplot.png?raw=true)
