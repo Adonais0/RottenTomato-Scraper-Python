@@ -1,4 +1,4 @@
-# Final Project of SI 507
+# RottenTomato Scraper
  * Target: Scrape 2000 movie information from [Rotten Tomato](https://www.rottentomatoes.com/browse/dvd-streaming-all/)
  * __Please download the [Cache File](https://drive.google.com/a/umich.edu/file/d/182RyW3mWL1yeghIf4r4tB3R5ZslDu_CT/view?usp=sharing) first!__
 
